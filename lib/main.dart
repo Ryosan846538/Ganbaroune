@@ -6,6 +6,8 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -32,6 +34,7 @@ class _MyAppState extends State<MyApp> {
           child: Text('Hello World'),
         ),
         bottomNavigationBar: Menu(
+          key: const Key('Menu'),
           currentIndex: _selectIndex,
           onTap: _onItemTapped,
         ),
