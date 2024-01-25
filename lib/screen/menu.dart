@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
+  const Menu({Key? key, required this.currentIndex, required this.onTap}) : super(key: key);
+
   final int currentIndex;
   final Function(int)? onTap;
-
-  Menu({required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
