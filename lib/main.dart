@@ -20,16 +20,16 @@ class MyAppState extends State<MyApp> {
     setState(() {
       _selectIndex = index;
     });
+  }
 
-    Widget _selectPage(int index) {
-      switch (index) {
-        case 1:
-          return const CountUpPage();
-          default:
-            return const Center(
-              child: Text('Hello World'),
-            );
-      }
+  Widget _selectPage(int index) {
+    switch (index) {
+      case 1:
+        return const CountUpPage();
+      default:
+        return const Center(
+          child: Text('Hello World'),
+        );
     }
   }
 
@@ -42,9 +42,7 @@ class MyAppState extends State<MyApp> {
           title: const Text('がんばろうね'),
           centerTitle: true,
         ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
+        body: _selectPage(_selectIndex),
         bottomNavigationBar: Menu(
           key: const Key('Menu'),
           currentIndex: _selectIndex,

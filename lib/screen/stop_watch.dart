@@ -13,6 +13,14 @@ class _CountUpPageState extends State<CountUpPage>{
 
   final _scrollController = ScrollController();
 
+  String _getDisplayTime(int time) {
+    final hours = ((time / (60 * 60 * 1000)) % 60).floor().toString().padLeft(2, '0');
+    final minutes = ((time / (60 * 1000)) % 60).floor().toString().padLeft(2, '0');
+    final seconds = ((time / 1000) % 60).floor().toString().padLeft(2, '0');
+
+    return '$hours:$minutes:$seconds';
+  }
+
   @override
   void initState(){
     super.initState();
@@ -27,11 +35,7 @@ class _CountUpPageState extends State<CountUpPage>{
 
   @override
   Widget build(BuildContext context){
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('勉強記録'),
-        ),
+      return Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -40,15 +44,15 @@ class _CountUpPageState extends State<CountUpPage>{
                 stream: _stopWatchTimer.rawTime,
                 initialData: _stopWatchTimer.rawTime.value,
                 builder: (context, snapshot) {
-                  final displayTime = StopWatchTimer.getDisplayTime(
+                  final displayTime = _getDisplayTime(
                     snapshot.data!,
                   );
                   return Center(
                     child: SizedBox(
-                      width: 144,
+                      width: 200,
                       child: Text(
                         displayTime,
-                        style: const TextStyle(fontSize: 40,),
+                        style: const TextStyle(fontSize: 50,),
                       ),
                     ),
                   );
@@ -66,7 +70,7 @@ class _CountUpPageState extends State<CountUpPage>{
                   ) {
                     final value = snapshot.data;
                     if (value!.isEmpty) {
-                      return const Text('No records');
+                      return const Text('記録がありません');
                     }
                     return ListView.builder(
                       controller: _scrollController,
@@ -89,17 +93,17 @@ class _CountUpPageState extends State<CountUpPage>{
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: _stopWatchTimer.onStartTimer,
-                child: const Text('Start'),
+                child: const Text('開始'),
               ),
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: _stopWatchTimer.onStopTimer,
-                child: const Text('Stop'),
+                child: const Text('停止'),
               ),
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: _stopWatchTimer.onResetTimer,
-                child: const Text('Reset'),
+                child: const Text('リセット'),
               ),
               const SizedBox(height: 32),
               ElevatedButton(
@@ -115,12 +119,11 @@ class _CountUpPageState extends State<CountUpPage>{
                     curve: Curves.easeOut,
                   );
                 },
-                child: const Text('Lap'),
+                child: const Text('記録'),
               ),
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
