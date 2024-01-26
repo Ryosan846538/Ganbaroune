@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/screen/menu.dart';
+import '/screen/stop_watch.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +20,17 @@ class MyAppState extends State<MyApp> {
     setState(() {
       _selectIndex = index;
     });
+
+    Widget _selectPage(int index) {
+      switch (index) {
+        case 1:
+          return const CountUpPage();
+          default:
+            return const Center(
+              child: Text('Hello World'),
+            );
+      }
+    }
   }
 
   @override
