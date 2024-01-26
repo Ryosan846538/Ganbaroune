@@ -12,7 +12,7 @@ class Menu extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: onTap,
-      selectedItemColor: Colors.lightBlue,
+      selectedItemColor: Colors.lightGreen.shade600,
       unselectedItemColor: Colors.grey,
       items: const [
         BottomNavigationBarItem(
