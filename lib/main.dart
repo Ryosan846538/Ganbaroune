@@ -26,7 +26,7 @@ class MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.lightBlue,
           title: const Text('がんばろうね'),
           centerTitle: true,
         ),
