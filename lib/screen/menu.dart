@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
-  const Menu({Key? key, required this.currentIndex, required this.onTap}) : super(key: key);
+  const Menu({Key? key, required this.currentIndex, required this.onTap})
+      : super(key: key);
 
   final int currentIndex;
   final Function(int)? onTap;
@@ -24,7 +25,7 @@ class Menu extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: 'プロフィール',
+          label: '友達リスト',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),
