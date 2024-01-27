@@ -12,7 +12,7 @@ class Menu extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: onTap,
-      selectedItemColor: Colors.lightGreen.shade600,
+      selectedItemColor: Colors.green[400],
       unselectedItemColor: Colors.grey,
       items: const [
         BottomNavigationBarItem(
@@ -21,11 +21,11 @@ class Menu extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.school),
-          label: '勉強記録',
+          label: 'まなびストック',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: '友達リスト',
+          label: 'プロフィール',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),
