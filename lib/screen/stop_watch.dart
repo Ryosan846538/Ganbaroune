@@ -11,8 +11,9 @@ class CountUpPage extends StatefulWidget {
 
 class _CountUpPageState extends State<CountUpPage>{
   final _stopWatchTimer = StopWatchTimer();
-
   final _scrollController = ScrollController();
+  final _flipCardKey = GlobalKey<FlipCardState>();
+
 
   String _getDisplayTime(int time) {
     final hours = ((time / (60 * 60 * 1000)) % 60).floor().toString().padLeft(2, '0');
@@ -42,6 +43,7 @@ class _CountUpPageState extends State<CountUpPage>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FlipCard(
+                key: _flipCardKey,
                 direction: FlipDirection.VERTICAL,
                 front: Card(
                   color: Colors.green[300],
@@ -50,21 +52,30 @@ class _CountUpPageState extends State<CountUpPage>{
                     side: BorderSide(color: Colors.black, width: 4),
                   ),
                   child: Container(
-                    width: 200,
-                    height: 100,
+                    width: 350,
+                    height: 120,
                     child: StreamBuilder<int>(
                       stream: _stopWatchTimer.rawTime,
                       initialData: _stopWatchTimer.rawTime.value,
                       builder: (context, snapshot) {
                         final displayTime = _getDisplayTime(snapshot.data!);
                         return Center(
-                          child: SizedBox(
-                            width: 160,
-                            child: Text(
-                              displayTime,
-                              style: const TextStyle(fontSize: 40, color: Colors.black),
-                            ),
-                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 160,
+                                child: Text(
+                                  displayTime,
+                                  style: const TextStyle(
+                                    fontSize: 40,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              const Icon(Icons.sync, size: 40, color: Colors.black,),
+                            ]
+                          )
                         );
                       }
                     ),
@@ -77,10 +88,25 @@ class _CountUpPageState extends State<CountUpPage>{
                     side: BorderSide(color: Colors.black, width: 4),
                   ),
                   child: Container(
-                    width: 200,
-                    height: 100,
+                    width: 350,
+                    height: 120,
                     child: const Center(
-                      child: Text('勉強頑張ろう!', style: TextStyle(fontSize: 20, color: Colors.black)),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 160,
+                              child: Text(
+                                '勉強頑張ろう!',
+                                style: const TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            const Icon(Icons.sync, size: 40, color: Colors.black,),
+                          ]
+                      )
                     ),
                   ),
                 ),
