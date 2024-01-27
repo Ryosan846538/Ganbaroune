@@ -24,7 +24,7 @@ class MyAppState extends State<MyApp> {
 
   Widget _selectPage(int index) {
     switch (index) {
-      case 1:
+      case 0:
         return const CountUpPage();
       default:
         return const Center(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:flip_card/flip_card.dart';
 
 class CountUpPage extends StatefulWidget {
   const CountUpPage({Key? key}) : super(key: key);
@@ -40,23 +41,49 @@ class _CountUpPageState extends State<CountUpPage>{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              StreamBuilder<int>(
-                stream: _stopWatchTimer.rawTime,
-                initialData: _stopWatchTimer.rawTime.value,
-                builder: (context, snapshot) {
-                  final displayTime = _getDisplayTime(
-                    snapshot.data!,
-                  );
-                  return Center(
-                    child: SizedBox(
-                      width: 200,
-                      child: Text(
-                        displayTime,
-                        style: const TextStyle(fontSize: 50,),
-                      ),
+              FlipCard(
+                direction: FlipDirection.VERTICAL,
+                front: Card(
+                  color: Colors.green[300],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(color: Colors.black, width: 4),
+                  ),
+                  child: Container(
+                    width: 200,
+                    height: 100,
+                    child: StreamBuilder<int>(
+                      stream: _stopWatchTimer.rawTime,
+                      initialData: _stopWatchTimer.rawTime.value,
+                      builder: (context, snapshot) {
+                        final displayTime = _getDisplayTime(snapshot.data!);
+                        return Center(
+                          child: SizedBox(
+                            width: 160,
+                            child: Text(
+                              displayTime,
+                              style: const TextStyle(fontSize: 40, color: Colors.black),
+                            ),
+                          ),
+                        );
+                      }
                     ),
-                  );
-                }
+                  ),
+                ),
+                back: Card(
+                  color: Colors.green[300],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(color: Colors.black, width: 4),
+                  ),
+                  child: Container(
+                    width: 200,
+                    height: 100,
+                    child: const Center(
+                      child: Text('勉強頑張ろう!', style: TextStyle(fontSize: 20, color: Colors.black)),
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 32,),
               SizedBox(
