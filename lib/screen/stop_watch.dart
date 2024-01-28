@@ -99,9 +99,9 @@ class _CountUpPageState extends State<CountUpPage> {
                         SizedBox(
                           width: 160,
                           child: Text(
-                            '勉強頑張ろう!',
+                            '勉強中...',
                             style: const TextStyle(
-                              fontSize: 25,
+                              fontSize: 40,
                               color: Colors.black,
                             ),
                           ),
@@ -152,12 +152,12 @@ class _CountUpPageState extends State<CountUpPage> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: _stopWatchTimer.onStartTimer,
-              child: const Text('開始'),
+              child: const Text('スタート'),
             ),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: _stopWatchTimer.onStopTimer,
-              child: const Text('停止'),
+              child: const Text('ストップ'),
             ),
             const SizedBox(height: 32),
             ElevatedButton(
