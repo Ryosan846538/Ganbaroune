@@ -16,8 +16,8 @@ class Menu extends StatelessWidget {
       unselectedItemColor: Colors.grey,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'ホーム',
+          icon: Icon(Icons.edit_note),
+          label: 'まなびウォッチ',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.school),
