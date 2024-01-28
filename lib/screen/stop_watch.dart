@@ -89,9 +89,9 @@ class _CountUpPageState extends State<CountUpPage> {
                   borderRadius: BorderRadius.circular(10),
                   side: const BorderSide(color: Colors.black, width: 4),
                 ),
-                // child: const SizedBox(
-                //   width: 360,
-                //   height: 120,
+                child: const SizedBox(
+                  width: 360,
+                  height: 120,
                   child: const Center(
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -112,7 +112,7 @@ class _CountUpPageState extends State<CountUpPage> {
                               color: Colors.black,
                             ),
                           ])),
-                // ),
+                ),
               ),
             ),
             const SizedBox(
@@ -136,6 +136,7 @@ class _CountUpPageState extends State<CountUpPage> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
+                _stopWatchTimer.onStopTimer();
                 showDialog(
                   context: context,
                   builder: (_) {
@@ -152,7 +153,10 @@ class _CountUpPageState extends State<CountUpPage> {
                       actions: <Widget>[
                         TextButton(
                           child: const Text("いいえ"),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            _stopWatchTimer.onStartTimer(); // タイマーを再開します
+                            Navigator.pop(context);
+                          },
                         ),
                         TextButton(
                           child: const Text("はい"),
