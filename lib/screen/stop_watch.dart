@@ -52,7 +52,7 @@ class _CountUpPageState extends State<CountUpPage> {
                   borderRadius: BorderRadius.circular(10),
                   side: const BorderSide(color: Colors.black, width: 4),
                 ),
-                child: Container(
+                child: SizedBox(
                   width: 350,
                   height: 120,
                   child: StreamBuilder<int>(
@@ -89,7 +89,7 @@ class _CountUpPageState extends State<CountUpPage> {
                   borderRadius: BorderRadius.circular(10),
                   side: const BorderSide(color: Colors.black, width: 4),
                 ),
-                child: Container(
+                child: SizedBox(
                   width: 350,
                   height: 120,
                   child: const Center(
@@ -142,6 +142,7 @@ class _CountUpPageState extends State<CountUpPage> {
                             padding: const EdgeInsets.all(8),
                             child: Text('${index + 1}: ${data.displayTime}'),
                           ),
+                          const SizedBox(height: 8), // 55行目の修正
                         ],
                       );
                     },
@@ -180,6 +181,7 @@ class _CountUpPageState extends State<CountUpPage> {
               },
               child: const Text('記録'),
             ),
+            const SizedBox(height: 32), // 92行目の修正
           ],
         ),
       ),
