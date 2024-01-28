@@ -50,7 +50,7 @@ class _CountUpPageState extends State<CountUpPage> {
                 color: Colors.green[300],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.black, width: 4),
+                  side: const BorderSide(color: Colors.black, width: 4),
                 ),
                 child: Container(
                   width: 350,
@@ -87,7 +87,7 @@ class _CountUpPageState extends State<CountUpPage> {
                 color: Colors.green[300],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.black, width: 4),
+                  side: const BorderSide(color: Colors.black, width: 4),
                 ),
                 child: Container(
                   width: 350,
@@ -100,13 +100,13 @@ class _CountUpPageState extends State<CountUpPage> {
                           width: 160,
                           child: Text(
                             '勉強中...',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 40,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const Icon(
+                        Icon(
                           Icons.sync,
                           size: 40,
                           color: Colors.black,
