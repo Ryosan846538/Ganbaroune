@@ -15,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('がんばろう'),
+        title: const Text('がんばろう'),
         backgroundColor: Colors.blue,
       ),
       body: Center(
@@ -52,11 +52,11 @@ class _LoginPageState extends State<LoginPage> {
               Center(
                 child: ElevatedButton(
 
-                    child: Text('ログイン'),
+                    child: const Text('ログイン'),
                   onPressed: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder:(context)=>home()),
+                      MaterialPageRoute(builder:(context)=>const Home()),
                     );
                   },
                 ),

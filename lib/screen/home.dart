@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import '/screen/menu.dart';
 import '/screen/stop_watch.dart';
 
-class home extends StatefulWidget {
-  const home({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
-  homeState createState() => homeState();
+  HomeState createState() => HomeState();
 }
 
-class homeState extends State<home> {
+class HomeState extends State<Home> {
   int _selectIndex = 0;
 
   void _onItemTapped(int index) {
