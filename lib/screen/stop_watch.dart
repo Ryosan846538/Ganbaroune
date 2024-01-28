@@ -53,7 +53,7 @@ class _CountUpPageState extends State<CountUpPage> {
                   side: const BorderSide(color: Colors.black, width: 4),
                 ),
                 child: SizedBox(
-                  width: 350,
+                  width: 360,
                   height: 120,
                   child: StreamBuilder<int>(
                       stream: _stopWatchTimer.rawTime,
@@ -65,7 +65,7 @@ class _CountUpPageState extends State<CountUpPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                               SizedBox(
-                                width: 160,
+                                width: 180,
                                 child: Text(
                                   displayTime,
                                   style: const TextStyle(
@@ -89,62 +89,34 @@ class _CountUpPageState extends State<CountUpPage> {
                   borderRadius: BorderRadius.circular(10),
                   side: const BorderSide(color: Colors.black, width: 4),
                 ),
-                child: const Center(
+                child: const SizedBox(
+                  width: 360,
+                  height: 120,
+                  child: Center(
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                        SizedBox(
-                          width: 160,
-                          child: Text(
-                            '勉強中...',
-                            style: TextStyle(
-                              fontSize: 40,
+                            SizedBox(
+                              width: 160,
+                              child: Text(
+                                '勉強中...',
+                                style: TextStyle(
+                                  fontSize: 40,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.sync,
+                              size: 40,
                               color: Colors.black,
                             ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.sync,
-                          size: 40,
-                          color: Colors.black,
-                        ),
-                      ])),
+                          ])),
+                ),
               ),
             ),
             const SizedBox(
               height: 32,
-            ),
-            SizedBox(
-              height: 80,
-              child: StreamBuilder<List<StopWatchRecord>>(
-                stream: _stopWatchTimer.records,
-                initialData: const [],
-                builder: (
-                  BuildContext context,
-                  AsyncSnapshot<List<StopWatchRecord>> snapshot,
-                ) {
-                  final value = snapshot.data;
-                  if (value!.isEmpty) {
-                    return const Text('記録がありません');
-                  }
-                  return ListView.builder(
-                    controller: _scrollController,
-                    itemCount: value.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final data = value[index];
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Text('${index + 1}: ${data.displayTime}'),
-                          ),
-                          const SizedBox(height: 8), // 55行目の修正
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
             ),
             const SizedBox(height: 32),
             ElevatedButton(
@@ -163,19 +135,39 @@ class _CountUpPageState extends State<CountUpPage> {
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: () async {
-                if (!_stopWatchTimer.isRunning) {
-                  return;
-                }
-                _stopWatchTimer.onAddLap();
-                await Future<void>.delayed(const Duration(milliseconds: 100));
-                await _scrollController.animateTo(
-                  _scrollController.position.maxScrollExtent,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeOut,
+              onPressed: () {
+                _stopWatchTimer.onStopTimer();
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return AlertDialog(
+                      title: const Text("きろくしますか？"),
+                      content: StreamBuilder<int>(
+                        stream: _stopWatchTimer.rawTime,
+                        initialData: _stopWatchTimer.rawTime.value,
+                        builder: (context, snapshot) {
+                          final displayTime = _getDisplayTime(snapshot.data!);
+                          return Text(displayTime);
+                        },
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text("いいえ"),
+                          onPressed: () {
+                            _stopWatchTimer.onStartTimer(); // タイマーを再開します
+                            Navigator.pop(context);
+                          },
+                        ),
+                        TextButton(
+                          child: const Text("はい"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
-              child: const Text('記録'),
+              child: const Text('きろく'),
             ),
             const SizedBox(height: 32), // 92行目の修正
           ],
