@@ -25,7 +25,7 @@ class Menu extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: 'プロフィール',
+          label: 'まなびフレンド',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),
