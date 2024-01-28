@@ -92,7 +92,7 @@ class _CountUpPageState extends State<CountUpPage> {
                 child: const SizedBox(
                   width: 360,
                   height: 120,
-                  child: const Center(
+                  child: Center(
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
