@@ -89,10 +89,7 @@ class _CountUpPageState extends State<CountUpPage> {
                   borderRadius: BorderRadius.circular(10),
                   side: const BorderSide(color: Colors.black, width: 4),
                 ),
-                child: const SizedBox(
-                  width: 350,
-                  height: 120,
-                  child: const Center(
+                child: const Center(
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -112,7 +109,6 @@ class _CountUpPageState extends State<CountUpPage> {
                           color: Colors.black,
                         ),
                       ])),
-                ),
               ),
             ),
             const SizedBox(
