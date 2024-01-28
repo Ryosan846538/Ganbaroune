@@ -155,12 +155,12 @@ class _CountUpPageState extends State<CountUpPage> {
                           child: const Text("いいえ"),
                           onPressed: () {
                             _stopWatchTimer.onStartTimer(); // タイマーを再開します
-                            Navigator.pop(context);
+                            Navigator.of(context).pop();
                           },
                         ),
                         TextButton(
                           child: const Text("はい"),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () =>  Navigator.of(context).pop();
                         ),
                       ],
                     );
