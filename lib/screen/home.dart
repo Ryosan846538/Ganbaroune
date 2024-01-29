@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '/screen/menu.dart';
 import '/screen/stop_watch.dart';
+import '/screen/learn_friends.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -22,6 +23,8 @@ class HomeState extends State<Home> {
     switch (index) {
       case 0:
         return const CountUpPage();
+      case 2:
+        return const FriendList();
       default:
         return const Center(
           child: Text('Hello World'),
