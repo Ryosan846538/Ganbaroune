@@ -16,7 +16,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('がんばろうね'),
-          backgroundColor: Colors.orange[300],
+        backgroundColor: Colors.orange[300],
+        centerTitle: true,
       ),
       body: Center(
         child: Container(

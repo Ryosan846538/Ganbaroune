@@ -139,6 +139,7 @@ class _CountUpPageState extends State<CountUpPage> {
                 _stopWatchTimer.onStopTimer();
                 showDialog(
                   context: context,
+                  barrierDismissible: false,
                   builder: (_) {
                     return AlertDialog(
                       title: const Text("きろくしますか？"),
@@ -154,13 +155,15 @@ class _CountUpPageState extends State<CountUpPage> {
                         TextButton(
                           child: const Text("いいえ"),
                           onPressed: () {
-                            _stopWatchTimer.onStartTimer(); // タイマーを再開します
-                            Navigator.pop(context);
+                            _stopWatchTimer.onStartTimer();
+                            Navigator.of(context, rootNavigator: true).pop();
                           },
                         ),
                         TextButton(
                           child: const Text("はい"),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            Navigator.of(context, rootNavigator: true).pop();
+                          },
                         ),
                       ],
                     );
