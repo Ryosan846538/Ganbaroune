@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '/screen/menu.dart';
 import '/screen/stop_watch.dart';
 import '/screen/learn_friends.dart';
+import '/screen/learn_stock.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -23,6 +24,8 @@ class HomeState extends State<Home> {
     switch (index) {
       case 0:
         return const CountUpPage();
+      case 1:
+        return const LearnStock();
       case 2:
         return const FriendList();
       default:
