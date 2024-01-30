@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/screen/user_register.dart';
 import './home.dart';
 
 class LoginPage extends StatefulWidget {
@@ -52,12 +53,22 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Center(
                 child: ElevatedButton(
-
                     child: const Text('ログイン'),
                   onPressed: (){
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder:(context)=>const Home()),
+                    );
+                  },
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  child: const Text('ユーザ登録'),
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder:(context)=>const UserRegister()),
                     );
                   },
                 ),
