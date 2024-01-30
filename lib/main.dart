@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '/screen/login.dart';
+import '/screen/user_register.dart';
 
 void main() {
   runApp( const MaterialApp(
-    home: LoginPage(),
+    home: UserRegister(),
   ),);
 }
 
