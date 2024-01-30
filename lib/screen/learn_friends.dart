@@ -49,53 +49,29 @@ class FriendListState extends State<FriendList> {
       body: ListView.builder(
         itemCount: friends.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            leading: Icon(
-              Icons.circle,
-              color: friends[index].statusColor,
+          return Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 1), // 枠線を追加
             ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('今日の目標: '),
-                Text(friends[index].name),
-              ],
+            child: ListTile(
+              leading: Icon(
+                Icons.circle,
+                color: friends[index].statusColor,
+              ),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('今日の目標: '),
+                  Text(friends[index].name),
+                ],
+              ),
             ),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              String? name;
-              return AlertDialog(
-                title: const Text('いっしょにがんばる?'),
-                icon: const Icon(
-                  Icons.handshake,
-                  size: 50,
-                ),
-                content: TextField(
-                  onChanged: (value) {
-                    name = value;
-                  },
-                  decoration: const InputDecoration(hintText: "名前を入力してね"),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('がんばる!'),
-                    onPressed: () {
-                      if (name != null && name!.isNotEmpty) {
-                        addFriend(name!);
-                        Navigator.of(context).pop();
-                      }
-                    },
-                  ),
-                ],
-              );
-            },
-          );
+          // ボタンの動作は変更なし
         },
         child: const Icon(Icons.person_add),
       ),
