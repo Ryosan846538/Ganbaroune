@@ -12,40 +12,40 @@ class _UserRegisterState extends State<UserRegister> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ユーザー登録しよう！'),
+        title:const Text('ユーザー登録しよう！'),
         backgroundColor: Colors.orange[300],
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding:const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // ユーザー名入力フィールド
-            TextField(
+           const TextField(
               decoration: InputDecoration(
                 labelText: 'ユーザー名',
               ),
             ),
-            SizedBox(height: 16.0),
+           const SizedBox(height: 16.0),
 
             // パスワード入力フィールド
-            TextField(
+           const TextField(
               decoration: InputDecoration(
                 labelText: 'パスワード',
               ),
               obscureText: true,
             ),
-            SizedBox(height: 16.0),
+           const SizedBox(height: 16.0),
 
             // パスワード確認入力フィールド
-            TextField(
+           const TextField(
               decoration: InputDecoration(
                 labelText: 'パスワード確認',
               ),
               obscureText: true,
             ),
-            SizedBox(height: 32.0),
+           const SizedBox(height: 32.0),
 
             // 登録ボタン
             ElevatedButton(
@@ -55,7 +55,7 @@ class _UserRegisterState extends State<UserRegister> {
                     MaterialPageRoute(builder:(context)=>const LoginPage()),
                 );
               },
-              child: Text('登録'),
+              child:const Text('登録'),
 
             ),
           ],
