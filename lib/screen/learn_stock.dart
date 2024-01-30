@@ -29,10 +29,10 @@ class LearnStock extends StatefulWidget {
   const LearnStock({Key? key}) : super(key: key);
 
   @override
-  _LearnStockState createState() => _LearnStockState();
+  LearnStockState createState() => LearnStockState();
 }
 
-class _LearnStockState extends State<LearnStock> {
+class LearnStockState extends State<LearnStock> {
   List<StudyRecord> studyRecords = [
     StudyRecord(date: DateTime.now(), studyTime: const Duration(hours: 1), subject: '国語'),
     // ここにデータを追加していく
