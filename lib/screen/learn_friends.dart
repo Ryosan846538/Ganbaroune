@@ -61,8 +61,11 @@ class FriendListState extends State<FriendList> {
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                      friends[index].name,
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
                   const Text('今日の目標: '),
-                  Text(friends[index].name),
                 ],
               ),
             ),
