@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 class Friend {
   final String name;
   final int status;
+  String? emojiReaction;
+  DateTime lastReactionDate;
 
-  Friend({required this.name, required this.status});
+  Friend({required this.name, required this.status, this.emojiReaction})
+      : lastReactionDate = DateTime.now();
 
   Color get statusColor {
     switch (status) {
@@ -34,6 +37,9 @@ class FriendListState extends State<FriendList> {
     Friend(name: 'かたやま', status: 2),
   ];
 
+  // 絵文字リスト
+  final List<String> emojiOptions = ['🙂', '😊', '😂', '😢', '😠', '👍', '👎'];
+
   void addFriend(String name) {
     setState(() {
       friends.add(Friend(name: name, status: 1));
@@ -51,7 +57,7 @@ class FriendListState extends State<FriendList> {
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 1), // 枠線を追加
+              border: Border.all(color: Colors.black, width: 1),
             ),
             child: ListTile(
               leading: Icon(
@@ -61,8 +67,35 @@ class FriendListState extends State<FriendList> {
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        friends[index].name,
+                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      DropdownButton<String>(
+                        value: friends[index].emojiReaction ?? 'None',
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            // 現在の日付と最後のリアクション日付が異なる場合、リアクションをリセット
+                            if (!isSameDay(DateTime.now(), friends[index].lastReactionDate)) {
+                              friends[index].emojiReaction = 'None';
+                            }
+                            friends[index].emojiReaction = newValue;
+                            friends[index].lastReactionDate = DateTime.now(); // リアクション日付を更新
+                          });
+                        },
+                        items: ['None', ...emojiOptions].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
                   const Text('今日の目標: '),
-                  Text(friends[index].name),
                 ],
               ),
             ),
@@ -76,5 +109,10 @@ class FriendListState extends State<FriendList> {
         child: const Icon(Icons.person_add),
       ),
     );
+  }
+
+  // 2つの日付が同じ日であるかどうかを確認
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
   }
 }
