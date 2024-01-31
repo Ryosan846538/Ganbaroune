@@ -104,7 +104,36 @@ class FriendListState extends State<FriendList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // ボタンの動作は変更なし
+          showDialog(
+            context: context,
+            builder: (context) {
+              String? name;
+              return AlertDialog(
+                title: const Text('いっしょにがんばる?'),
+                icon: const Icon(
+                  Icons.handshake,
+                  size: 50,
+                ),
+                content: TextField(
+                  onChanged: (value) {
+                    name = value;
+                  },
+                  decoration: const InputDecoration(hintText: "名前を入力してね"),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('がんばる!'),
+                    onPressed: () {
+                      if (name != null && name!.isNotEmpty) {
+                        addFriend(name!);
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         },
         child: const Icon(Icons.person_add),
       ),
