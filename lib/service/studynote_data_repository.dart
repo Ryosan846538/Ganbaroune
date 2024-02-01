@@ -9,6 +9,6 @@ class StudyNoteDataRepository {
   }
 
   Future<dynamic> getStudyNoteShow(String username) async {
-    return apiClient.get('studynote/$username');
+    return apiClient.get('studynote/show/$username');
   }
 }
