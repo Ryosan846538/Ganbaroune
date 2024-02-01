@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flip_card/flip_card.dart';
+import '/service/user_data_repository.dart';
+import '/service/studynote_data_repository.dart';
+import '/service/api_client.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CountUpPage extends StatefulWidget {
   const CountUpPage({Key? key}) : super(key: key);
@@ -38,6 +44,9 @@ class _CountUpPageState extends State<CountUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    // snapshot.dataを保存するための変数を定義します
+    String displayTime = '';
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -59,7 +68,7 @@ class _CountUpPageState extends State<CountUpPage> {
                       stream: _stopWatchTimer.rawTime,
                       initialData: _stopWatchTimer.rawTime.value,
                       builder: (context, snapshot) {
-                        final displayTime = _getDisplayTime(snapshot.data!);
+                        displayTime = _getDisplayTime(snapshot.data!);
                         return Center(
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -161,7 +170,17 @@ class _CountUpPageState extends State<CountUpPage> {
                         ),
                         TextButton(
                           child: const Text("はい"),
-                          onPressed: () {
+                          onPressed: () async {
+                            String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+                            dynamic inputData = {
+                              'studytime': displayTime,
+                              'subject': 1,
+                              'username': 'test',
+                              'date': formattedDate,
+                              'goal': 'test'
+                            };
+                            await fetchStudyNote(inputData);
+                            if (!mounted) return;
                             Navigator.of(context, rootNavigator: true).pop();
                           },
                         ),
@@ -177,5 +196,21 @@ class _CountUpPageState extends State<CountUpPage> {
         ),
       ),
     );
+  }
+}
+
+Future<void> fetchStudyNote(dynamic inputData) async {
+  final String apiUrl = dotenv.get('API_SERVER');
+  ApiClient apiClient = ApiClient(apiUrl);
+  var studyNote = StudyNoteDataRepository(apiClient);
+
+  try {
+    await studyNote.postStudyNoteAdd(inputData);
+    // データの受け取りと処理はここで行う
+    // 例えば、結果をログに出力するなど
+  } catch (error) {
+    // エラーハンドリング
+    // print('Error: $error');
+    // print('Error Details: ${error.toString()}');
   }
 }
