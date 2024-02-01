@@ -8,15 +8,7 @@ class StudyNoteDataRepository {
     return apiClient.post('studynote/add', data);
   }
 
-  Future<dynamic> postStudyNoteDate(dynamic data) async {
-    return apiClient.post('studynote/date', data);
-  }
-
-  Future<dynamic> postStudyNoteTime(dynamic data) async {
-    return apiClient.post('studynote/time', data);
-  }
-
-  Future<dynamic> postStudyNoteGoal(dynamic data) async {
-    return apiClient.post('studynote/goal', data);
+  Future<dynamic> getStudyNoteShow(String username) async {
+    return apiClient.get('studynote/$username');
   }
 }
