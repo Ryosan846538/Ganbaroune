@@ -45,7 +45,7 @@ class LearnStockState extends State<LearnStock> {
     try{
       studyRecords = fetchStudynoteShow('test');
     }catch (error){
-       print('Error: $error');
+       //print('Error: $error');
     }
   }
 
@@ -65,11 +65,11 @@ class LearnStockState extends State<LearnStock> {
         future: studyRecords,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Text('No study records available.');
+            return const Text('No study records available.');
           } else {
             return ListView.builder(
               itemCount: snapshot.data!.length,
@@ -105,7 +105,6 @@ Future<List<StudyRecord>> fetchStudynoteShow(String username) async {
     if (responseData['message'] == 'succeed') {
       // Assuming responseData['data'] is a list of study records
       List<Map<String, dynamic>> dataList = List.castFrom(responseData['data']);
-      print(dataList);
       studyRecords = dataList.map((data) {
         // Assuming 'date', 'studytime', and 'subject' are keys in each study record
         DateTime date = DateTime.parse(data['date']);
@@ -132,11 +131,11 @@ Future<List<StudyRecord>> fetchStudynoteShow(String username) async {
 
     } else {
       // Handle the case when the API response is not successful
-      print('API response indicates failure');
+      //print('API response indicates failure');
     }
   } catch (error) {
     // Handle error
-    print('Error: $error');
+    //print('Error: $error');
   }
 
   return studyRecords;
