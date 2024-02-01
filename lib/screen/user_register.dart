@@ -36,7 +36,7 @@ class _UserRegisterState extends State<UserRegister> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:const Text('ユーザー登録しよう！'),
+        title: const Text('ユーザー登録しよう！'),
         backgroundColor: Colors.orange[300],
         centerTitle: true,
       ),
@@ -48,7 +48,7 @@ class _UserRegisterState extends State<UserRegister> {
             // ユーザー名入力フィールド
             TextField(
               controller: nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'ユーザー名',
               ),
             ),
@@ -57,7 +57,7 @@ class _UserRegisterState extends State<UserRegister> {
             // パスワード入力フィールド
             TextField(
               controller: passwordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'パスワード',
               ),
               obscureText: true,
@@ -65,7 +65,7 @@ class _UserRegisterState extends State<UserRegister> {
             const SizedBox(height: 16.0),
 
             // パスワード確認入力フィールド
-            TextField(
+            const TextField(
               // controller: passwordConfirmController,
               decoration: InputDecoration(
                 labelText: 'パスワード確認',
@@ -81,17 +81,27 @@ class _UserRegisterState extends State<UserRegister> {
                   'name': nameController.text,
                   'password': passwordController.text,
                 };
-                try{
-                  await fetchUserData(inputData);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder:(context)=>const LoginPage()),
-                  );
-                } catch (error){
-                  print('Error: $error');
+
+                try {
+                  // ウィジェットが非同期処理を始める前に、
+                  // 安全に context を取得
+                  BuildContext currentContext = context;
+
+                  // 別の非同期関数内で context を使用するために Future.microtask を使用
+                  await Future.microtask(() async {
+                    await fetchUserData(inputData);
+                    // await が終わった後に保存した context を使用
+                    Navigator.push(
+                      currentContext,
+                      MaterialPageRoute(builder:(context) => const LoginPage()),
+                    );
+                  });
+                } catch (error) {
+                  // エラーハンドリング
+                  // print('Error: $error');
                 }
               },
-              child:const Text('登録'),
+              child: const Text('登録'),
             ),
           ],
         ),
@@ -102,15 +112,15 @@ class _UserRegisterState extends State<UserRegister> {
 
 
 Future<void> fetchUserData(dynamic inputData) async {
-  // ApiClient apiClient = ApiClient('');
+  ApiClient apiClient = ApiClient('');
   var userData = UserDataRepository(apiClient);
   try {
     final data = await userData.createUserData(inputData);
     // データの受け取りと処理
-    print('User Data: $data');
+    // print('User Data: $data');
   } catch (error) {
     // エラーハンドリング
-    print('Error: $error');
-    print('Error Details: ${error.toString()}');
+    // print('Error: $error');
+    // print('Error Details: ${error.toString()}');
   }
 }
