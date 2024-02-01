@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '/screen/user_register.dart';
 import './home.dart';
+import '/service/user_data_repository.dart';
+import '/service/api_client.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -11,6 +14,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isObscure = true;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
+                  controller: nameController,
                   decoration: const InputDecoration(
                     labelText: 'ユーザー名を入力してください',
                   ),
@@ -37,6 +43,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
+                  controller: passwordController,
                   obscureText: _isObscure,
                   decoration: InputDecoration(
                       labelText: 'Password',
@@ -54,12 +61,42 @@ class _LoginPageState extends State<LoginPage> {
               Center(
                 child: ElevatedButton(
                     child: const Text('ログイン'),
-                  onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder:(context)=>const Home()),
-                    );
-                  },
+                      onPressed: () async {
+                        dynamic inputData = {
+                          'name': nameController.text,
+                          'password': passwordController.text,
+                        };
+                        try{
+                          dynamic responseData=await fetchUserDataLogin(inputData); // Pass context here
+                          if (!mounted) return;
+                          if(responseData["message"]!="error"){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder:(context)=>const Home()),
+                            );
+                          }else{
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title:const Text("エラー"),
+                                  content: const Text("ユーザー名またはパスワードが間違っています。"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context); // ダイアログを閉じる
+                                      },
+                                      child: const Text("OK"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        } catch (error){
+                          // print('Error: $error');
+                        }
+                    },
                 ),
               ),
               Center(
@@ -79,4 +116,23 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+Future<dynamic> fetchUserDataLogin(dynamic inputData) async {
+  final String apiUrl =dotenv.get('API_SERVER');
+  ApiClient apiClient = ApiClient(apiUrl);
+  var userData = UserDataRepository(apiClient);
+  dynamic responseData;
+  try {
+    responseData =await userData.postLogin(inputData);
+    // データの受け取りと処理はここで行う
+      //print(responseData);
+    // 例えば、結果をログに出力するなど
+  } catch (error) {
+    responseData ={
+      "message":"error"
+    };
+    //print(responseData);
+  }
+  return responseData;
 }
