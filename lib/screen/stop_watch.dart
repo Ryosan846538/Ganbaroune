@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flip_card/flip_card.dart';
-import '/service/user_data_repository.dart';
 import '/service/studynote_data_repository.dart';
 import '/service/api_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CountUpPage extends StatefulWidget {
   const CountUpPage({Key? key}) : super(key: key);
