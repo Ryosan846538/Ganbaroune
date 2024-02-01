@@ -7,9 +7,9 @@ class UserRegister extends StatefulWidget {
   const UserRegister({Key? key}) : super(key: key);
 
   @override
-  State<UserRegister> createState() => _UserRegisterState();
+  State<UserRegister> createState() => UserRegisterState();
 }
-class _UserRegisterState extends State<UserRegister> {
+class UserRegisterState extends State<UserRegister> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -75,33 +75,25 @@ class _UserRegisterState extends State<UserRegister> {
             const SizedBox(height: 32.0),
 
             // 登録ボタン
+            // 登録ボタン
             ElevatedButton(
               onPressed: () async {
                 dynamic inputData = {
                   'name': nameController.text,
                   'password': passwordController.text,
                 };
-
-                try {
-                  // ウィジェットが非同期処理を始める前に、
-                  // 安全に context を取得
-                  BuildContext currentContext = context;
-
-                  // 別の非同期関数内で context を使用するために Future.microtask を使用
-                  await Future.microtask(() async {
-                    await fetchUserData(inputData);
-                    // await が終わった後に保存した context を使用
-                    Navigator.push(
-                      currentContext,
-                      MaterialPageRoute(builder:(context) => const LoginPage()),
-                    );
-                  });
-                } catch (error) {
-                  // エラーハンドリング
+                try{
+                  await fetchUserData(inputData); // Pass context here
+                  if (!mounted) return;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder:(context)=>const LoginPage()),
+                  );
+                } catch (error){
                   // print('Error: $error');
                 }
               },
-              child: const Text('登録'),
+              child:const Text('登録'),
             ),
           ],
         ),
@@ -115,9 +107,9 @@ Future<void> fetchUserData(dynamic inputData) async {
   ApiClient apiClient = ApiClient('');
   var userData = UserDataRepository(apiClient);
   try {
-    final data = await userData.createUserData(inputData);
-    // データの受け取りと処理
-    // print('User Data: $data');
+    await userData.createUserData(inputData);
+    // データの受け取りと処理はここで行う
+    // 例えば、結果をログに出力するなど
   } catch (error) {
     // エラーハンドリング
     // print('Error: $error');
