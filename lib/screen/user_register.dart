@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import './login.dart';
 import '/service/user_data_repository.dart';
 import '/service/api_client.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class UserRegister extends StatefulWidget {
   const UserRegister({Key? key}) : super(key: key);
+
 
   @override
   State<UserRegister> createState() => UserRegisterState();
@@ -104,7 +106,8 @@ class UserRegisterState extends State<UserRegister> {
 
 
 Future<void> fetchUserData(dynamic inputData) async {
-  ApiClient apiClient = ApiClient('');
+  final String apiUrl =dotenv.get('API_SERVER');
+  ApiClient apiClient = ApiClient(apiUrl);
   var userData = UserDataRepository(apiClient);
   try {
     await userData.createUserData(inputData);
