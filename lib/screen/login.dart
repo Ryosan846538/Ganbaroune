@@ -4,6 +4,7 @@ import './home.dart';
 import '/service/user_data_repository.dart';
 import '/service/api_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+const storage = FlutterSecureStorage();
 class _LoginPageState extends State<LoginPage> {
   bool _isObscure = true;
   TextEditingController nameController = TextEditingController();
@@ -87,6 +89,8 @@ class _LoginPageState extends State<LoginPage> {
                           dynamic responseData=await fetchUserDataLogin(inputData); // Pass context here
                           if (!mounted) return;
                           if(responseData["message"]!="error"){
+                            await storage.write(key: "username", value: nameController.text);
+                            if (!mounted) return;
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder:(context)=>const Home()),
