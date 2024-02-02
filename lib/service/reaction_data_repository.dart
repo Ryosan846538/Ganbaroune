@@ -8,10 +8,6 @@ class ReactionDataRepository {
     return apiClient.get('reaction/search/$myName');
   }
 
-  Future<dynamic> postReactionDelete(dynamic data) async {
-    return apiClient.post('reaction/delete', data);
-  }
-
   Future<dynamic> postReactionAdd(dynamic data) async {
     return apiClient.post('reaction/add', data);
   }
