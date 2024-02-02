@@ -6,6 +6,10 @@ import '/service/user_data_repository.dart';
 import '/service/api_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const storage = FlutterSecureStorage();
+
 
 class CountUpPage extends StatefulWidget {
   const CountUpPage({Key? key}) : super(key: key);
@@ -136,9 +140,10 @@ class _CountUpPageState extends State<CountUpPage> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
+                        String? value = await storage.read(key: "username");
                         dynamic statusCode = {
                           'login': 1,
-                          'name': 'test',
+                          'name': value,
                         };
                         await updateLogin(statusCode);
                         _stopWatchTimer.onStartTimer();
@@ -257,10 +262,11 @@ class _CountUpPageState extends State<CountUpPage> {
                                   child: const Text("はい"),
                                   onPressed: () async {
                                     String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+                                    String? value = await storage.read(key: "username");
                                     dynamic inputData = {
                                       'studytime': displayTime,
                                       'subject': 1,
-                                      'username': 'test',
+                                      'username': value,
                                       'date': formattedDate,
                                       'goal': 'test'
                                     };
