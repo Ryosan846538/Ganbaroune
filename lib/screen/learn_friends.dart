@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '/service/friend_data_repository.dart';
+import '/service/api_client.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Friend {
   final String name;
@@ -23,6 +26,13 @@ class Friend {
   }
 }
 
+class FriendName {
+  final String friendme;
+  final String friendyou;
+
+  FriendName({required this.friendme, required this.friendyou});
+}
+
 class FriendList extends StatefulWidget {
   const FriendList({Key? key}) : super(key: key);
 
@@ -31,19 +41,79 @@ class FriendList extends StatefulWidget {
 }
 
 class FriendListState extends State<FriendList> {
-  List<Friend> friends = [
-    Friend(name: 'やまだ', status: 1),
-    Friend(name: 'みと', status: 0),
-    Friend(name: 'かたやま', status: 2),
-  ];
+  List<Friend> friends = [];
+
+  @override
+  @override
+  void initState() {
+    super.initState();
+    fetchFriends();
+  }
+
+  void fetchFriends() async {
+    try {
+      List<Friend> fetchedFriends = await getFriends('test');
+      if (fetchedFriends.isNotEmpty) {
+        setState(() {
+          friends = fetchedFriends;
+        });
+      }
+    } catch (error) {
+      //print('Error: $error');
+    }
+  }
+
+  Future<void> _refreshFriends() async {
+    final updatedRecords = await getFriends('test');
+    if (updatedRecords.isNotEmpty) {
+      setState(() {
+        friends = updatedRecords;
+      });
+    }
+  }
+
+  TextEditingController friendController = TextEditingController();
+
+  final List<String> emojiOptions = ['None', '🙂', '😊', '😂', '😢', '😠', '👍', '👎'];
 
   // 絵文字リスト
-  final List<String> emojiOptions = ['🙂', '😊', '😂', '😢', '😠', '👍', '👎'];
+  final Map<String, int> emojiToInt = {
+    'None': 0, // 追加: リアクションなしを示すキー
+    '🙂': 1,
+    '😊': 2,
+    '😂': 3,
+    '😢': 4,
+    '😠': 5,
+    '👍': 6,
+    '👎': 7,
+  };
 
-  void addFriend(String name) {
-    setState(() {
-      friends.add(Friend(name: name, status: 1));
-    });
+  void addFriend(String name) async {
+    dynamic inputData = {
+      'myself': 'test',
+      'yourself': name,
+    };
+    print(inputData);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    try {
+      await fetchFriend(inputData);
+      List<Friend> updatedFriends = await getFriends('test');
+      setState(() {
+        friends = updatedFriends;
+      });
+    } catch (error) {
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+            content: Text('Error: $error'),
+            action: SnackBarAction(
+              label: '閉じる',
+              onPressed: () {
+                // Some code to undo the change
+              },
+            )
+        ),
+      );
+    }
   }
 
   @override
@@ -52,55 +122,63 @@ class FriendListState extends State<FriendList> {
       appBar: AppBar(
         title: const Text('まなびフレンド'),
       ),
-      body: ListView.builder(
-        itemCount: friends.length,
-        itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 1),
-            ),
-            child: ListTile(
-              leading: Icon(
-                Icons.circle,
-                color: friends[index].statusColor,
+      body: RefreshIndicator(
+        onRefresh: _refreshFriends,
+        child: ListView.builder(
+          itemCount: friends.length,
+          itemBuilder: (context, index) {
+            var friend = friends[index];
+            return Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black, width: 1),
               ),
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        friends[index].name,
-                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      DropdownButton<String>(
-                        value: friends[index].emojiReaction ?? 'None',
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            // 現在の日付と最後のリアクション日付が異なる場合、リアクションをリセット
-                            if (!isSameDay(DateTime.now(), friends[index].lastReactionDate)) {
-                              friends[index].emojiReaction = 'None';
-                            }
-                            friends[index].emojiReaction = newValue;
-                            friends[index].lastReactionDate = DateTime.now(); // リアクション日付を更新
-                          });
-                        },
-                        items: ['None', ...emojiOptions].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ),
-                  const Text('今日の目標: '),
-                ],
+              child: ListTile(
+                leading: Icon(
+                  Icons.circle,
+                  color: friends[index].statusColor,
+                ),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          friend.name,
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        DropdownButton<String>(
+                          value: friend.emojiReaction ?? 'None',
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              if (!isSameDay(DateTime.now(),
+                                  friends[index].lastReactionDate)) {
+                                friend.emojiReaction = 'None';
+                              }
+                              friend.emojiReaction = newValue;
+                              friend.lastReactionDate = DateTime.now();
+                              // int emojiValue = emojiToInt[newValue!]!;
+                              // print('emojiValue: $emojiValue');
+                            });
+                          },
+                          items: emojiOptions.map<DropdownMenuItem<String>>((
+                              String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                    const Text('今日の目標: '),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -118,6 +196,7 @@ class FriendListState extends State<FriendList> {
                   onChanged: (value) {
                     name = value;
                   },
+                  controller: friendController,
                   decoration: const InputDecoration(hintText: "名前を入力してね"),
                 ),
                 actions: <Widget>[
@@ -125,7 +204,7 @@ class FriendListState extends State<FriendList> {
                     child: const Text('がんばる!'),
                     onPressed: () {
                       if (name != null && name!.isNotEmpty) {
-                        addFriend(name!);
+                        addFriend(friendController.text);
                         Navigator.of(context).pop();
                       }
                     },
@@ -142,6 +221,56 @@ class FriendListState extends State<FriendList> {
 
   // 2つの日付が同じ日であるかどうかを確認
   bool isSameDay(DateTime date1, DateTime date2) {
-    return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
+    return date1.year == date2.year && date1.month == date2.month &&
+        date1.day == date2.day;
   }
+}
+
+Future<List<Friend>> fetchFriend(dynamic inputData) async {
+  final String apiUrl = dotenv.get('API_SERVER');
+  ApiClient apiClient = ApiClient(apiUrl);
+  var friend = FriendDataRepository(apiClient);
+
+  try {
+    await friend.postFriendAdd(inputData);
+    print('API Response: $inputData');
+    // データの受け取りと処理はここで行う
+    // 例えば、結果をログに出力するなど
+    List<Friend> updatedFriends = await getFriends('test');
+    return updatedFriends;
+  } catch (error) {
+    // エラーハンドリング
+    // print('Error: $error');
+    // print('Error Details: ${error.toString()}');
+    return [];
+  }
+}
+
+Future<List<Friend>> getFriends(String username) async {
+  final String apiUrl = dotenv.get('API_SERVER');
+  ApiClient apiClient = ApiClient(apiUrl);
+  var friend = FriendDataRepository(apiClient);
+  List<Friend> friends = [];
+
+  try{
+    dynamic responseData = await friend.getFriendName(username);
+    print('API Response: $responseData');
+    if(responseData['message'] == 'succeed'){
+      List<Map<String, dynamic>> dataList = List.castFrom(responseData['data']);
+      friends = dataList.map((data) {
+        String friendyou = data['friendyou'].toString();
+        return Friend(
+          name: friendyou, // Use friendyou as the name
+          status: 0, // or any default status
+        );
+      }).toList();
+      print('API Response: $responseData');
+    } else {
+      // Handle the case when the API response is not successful
+      //print('API response indicates failure');
+    }
+  } catch (error) {
+    // Text(e);
+  }
+  return friends; // Always return a list, even if it's empty
 }
