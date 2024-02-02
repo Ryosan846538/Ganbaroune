@@ -77,13 +77,22 @@ class LearnStockState extends State<LearnStock> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return Container(
+                  height: 100,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black, width: 1),
                     color: snapshot.data![index].subjectColor,
                   ),
-                  child: ListTile(
-                    title: Text('日付: ${snapshot.data![index].date}'),
-                    subtitle: Text('勉強時間: ${snapshot.data![index].studyTime}'),
+                  child: Center(
+                    child: ListTile(
+                      title: Text(
+                        '勉強時間: ${snapshot.data![index].studyTime}',
+                        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        '日付: ${snapshot.data![index].date}',
+                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
                 );
               },
