@@ -93,7 +93,6 @@ class FriendListState extends State<FriendList> {
       'myself': 'test',
       'yourself': name,
     };
-    //print(inputData);
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     try {
       await fetchFriend(inputData);
@@ -234,7 +233,6 @@ Future<List<Friend>> fetchFriend(dynamic inputData) async {
 
   try {
     await friend.postFriendAdd(inputData);
-    //print('API Response: $inputData');
     // データの受け取りと処理はここで行う
     // 例えば、結果をログに出力するなど
     List<Friend> updatedFriends = await getFriends('john');
@@ -269,7 +267,6 @@ Future<List<Friend>> getFriends(String username) async {
           goal: goal,// or any default status
         );
       }).toList();
-
     } else {
       // Handle the case when the API response is not successful
       //print('API response indicates failure');
