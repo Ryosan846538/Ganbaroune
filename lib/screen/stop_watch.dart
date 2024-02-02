@@ -241,24 +241,24 @@ class _CountUpPageState extends State<CountUpPage> {
                                 },
                               ),
                               actions: <Widget>[
-                                DropdownButton<String>(
-                                  value: selectedSubject,
-                                  onChanged: (String? newValue) {
-                                    if (newValue != null) {
-                                      setState(() {
-                                        selectedSubject = newValue;
-                                      });
-                                      // ここで他の処理を行うこともできます
-                                      // 例えば、データベースへの更新など
-                                    }
-                                  },
-                                  items: <String>['何もなし', '課題', '自習', '秘密'].map<DropdownMenuItem<String>>((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                ),
+                                // DropdownButton<String>(
+                                //   value: selectedSubject,
+                                //   onChanged: (String? newValue) {
+                                //     if (newValue != null) {
+                                //       setState(() {
+                                //         selectedSubject = newValue;
+                                //       });
+                                //       // ここで他の処理を行うこともできます
+                                //       // 例えば、データベースへの更新など
+                                //     }
+                                //   },
+                                //   items: <String>['何もなし', '課題', '自習', '秘密'].map<DropdownMenuItem<String>>((String value) {
+                                //     return DropdownMenuItem<String>(
+                                //       value: value,
+                                //       child: Text(value),
+                                //     );
+                                //   }).toList(),
+                                // ),
                                 const SizedBox(
                                   height: 32,
                                 ),
@@ -289,6 +289,26 @@ class _CountUpPageState extends State<CountUpPage> {
                                     await updateLogin(statusCode);
                                     if (!mounted) return;
                                     Navigator.of(context, rootNavigator: true).pop();
+
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return SimpleDialog(
+                                          title: const Text("記録の種類は？"),
+                                          children: <String>['何もなし', '課題', '自習', '秘密'].map<SimpleDialogOption>((String value) {
+                                            return SimpleDialogOption(
+                                              child: Text(value),
+                                              onPressed: () {
+                                                setState(() {
+                                                  selectedSubject = value;
+                                                });
+                                                Navigator.of(context, rootNavigator: true).pop();
+                                              },
+                                            );
+                                          }).toList(),
+                                        );
+                                      },
+                                    );
                                   },
                                 ),
                               ],
