@@ -122,7 +122,8 @@ class _CountUpPageState extends State<CountUpPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 64),
+            const SizedBox(height: 32),
+            const SizedBox(height: 32),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -131,13 +132,6 @@ class _CountUpPageState extends State<CountUpPage> {
                   children: [
                     ElevatedButton(
                       onPressed: _stopWatchTimer.onStartTimer,
-                      child: const Text(
-                          'スタート',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                      ),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(Colors.indigo[200]!),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -146,20 +140,20 @@ class _CountUpPageState extends State<CountUpPage> {
                           ),
                         ),
                         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          EdgeInsets.all(15),
+                          const EdgeInsets.all(15),
+                        ),
+                      ),
+                      child: const Text(
+                        'スタート',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
                         ),
                       ),
                     ),
                     const SizedBox(height: 32),
                     ElevatedButton(
                       onPressed: _stopWatchTimer.onStopTimer,
-                      child: const Text(
-                          'ストップ',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                      ),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(Colors.pink[200]!),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -171,17 +165,17 @@ class _CountUpPageState extends State<CountUpPage> {
                           const EdgeInsets.all(15),
                         ),
                       ),
+                      child: const Text(
+                        'ストップ',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                       const SizedBox(height: 32),
                       ElevatedButton(
                         onPressed: _stopWatchTimer.onResetTimer,
-                        child: const Text(
-                            'リセット',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                        ),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.yellow[200]!),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -193,14 +187,20 @@ class _CountUpPageState extends State<CountUpPage> {
                             const EdgeInsets.all(15),
                           ),
                         ),
+                        child: const Text(
+                          'リセット',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                        ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 32),
-                Container(
-                    width: 300,
-                    child:
-                    ElevatedButton(
+                SizedBox(
+                  width: 300,
+                  child: ElevatedButton(
                       onPressed: () {
                         _stopWatchTimer.onStopTimer();
                         showDialog(
@@ -245,13 +245,6 @@ class _CountUpPageState extends State<CountUpPage> {
                           },
                         );
                       },
-                      child: const Text(
-                        'きろく',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(Colors.green[200]!),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -261,6 +254,13 @@ class _CountUpPageState extends State<CountUpPage> {
                         ),
                         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                           const EdgeInsets.all(15),
+                        ),
+                      ),
+                      child: const Text(
+                        'まなびストック',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
                         ),
                       ),
                     ),
