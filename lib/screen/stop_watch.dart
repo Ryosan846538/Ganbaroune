@@ -48,6 +48,13 @@ class _CountUpPageState extends State<CountUpPage> {
     super.dispose();
   }
 
+  final Map<String, int> subjectToInt = {
+    '何もなし': 0, // 追加: リアクションなしを示すキー
+    '課題': 1,
+    '自習': 2,
+    '秘密': 3,
+  };
+
   @override
   Widget build(BuildContext context) {
     // snapshot.dataを保存するための変数を定義します
@@ -224,7 +231,7 @@ class _CountUpPageState extends State<CountUpPage> {
                           barrierDismissible: false,
                           builder: (_) {
                             return AlertDialog(
-                              title: const Text("きろくしますか？"),
+                              title: const Text("まなびをストックしますか？"),
                               content: StreamBuilder<int>(
                                 stream: _stopWatchTimer.rawTime,
                                 initialData: _stopWatchTimer.rawTime.value,
