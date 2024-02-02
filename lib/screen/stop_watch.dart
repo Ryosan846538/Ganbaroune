@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flip_card/flip_card.dart';
 import '/service/studynote_data_repository.dart';
+import '/service/user_data_repository.dart';
 import '/service/api_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
@@ -131,7 +132,14 @@ class _CountUpPageState extends State<CountUpPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: _stopWatchTimer.onStartTimer,
+                      onPressed: () async {
+                        dynamic statusCode = {
+                          'login': 1,
+                          'name': 'test',
+                        };
+                        await updateLogin(statusCode);
+                        _stopWatchTimer.onStartTimer();
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(Colors.indigo[200]!),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -236,6 +244,11 @@ class _CountUpPageState extends State<CountUpPage> {
                                       'goal': 'test'
                                     };
                                     await fetchStudyNote(inputData);
+                                    dynamic statusCode = {
+                                      'login': 0,
+                                      'name': 'test',
+                                    };
+                                    await updateLogin(statusCode);
                                     if (!mounted) return;
                                     Navigator.of(context, rootNavigator: true).pop();
                                   },
@@ -284,6 +297,20 @@ Future<void> fetchStudyNote(dynamic inputData) async {
     await studyNote.postStudyNoteAdd(inputData);
     // データの受け取りと処理はここで行う
     // 例えば、結果をログに出力するなど
+  } catch (error) {
+    // エラーハンドリング
+    // print('Error: $error');
+    // print('Error Details: ${error.toString()}');
+  }
+}
+
+Future<void> updateLogin(dynamic statusCode) async {
+  final String apiUrl = dotenv.get('API_SERVER');
+  ApiClient apiClient = ApiClient(apiUrl);
+  var status = UserDataRepository(apiClient);
+
+  try{
+    await status.postLoginStatus(statusCode);
   } catch (error) {
     // エラーハンドリング
     // print('Error: $error');
