@@ -6,8 +6,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 const storage = FlutterSecureStorage();
 class StudyRecord {
-  final DateTime date;
-  final Duration studyTime;
+  final String date;
+  final String studyTime;
   final String subject;
 
   StudyRecord({required this.date, required this.studyTime, required this.subject});
@@ -83,7 +83,7 @@ class LearnStockState extends State<LearnStock> {
                   ),
                   child: ListTile(
                     title: Text('日付: ${snapshot.data![index].date}'),
-                    subtitle: Text('勉強時間: ${snapshot.data![index].studyTime.inHours}時間'),
+                    subtitle: Text('勉強時間: ${snapshot.data![index].studyTime}'),
                   ),
                 );
               },
@@ -108,25 +108,17 @@ Future<List<StudyRecord>> fetchStudynoteShow() async {
       // Assuming responseData['data'] is a list of study records
       List<Map<String, dynamic>> dataList = List.castFrom(responseData['data']);
       studyRecords = dataList.map((data) {
-        // Assuming 'date', 'studytime', and 'subject' are keys in each study record
         DateTime date = DateTime.parse(data['date']);
-        Duration studyTime;
-
-        if (data['studytime'] is String) {
-          // Parse 'studytime' as DateTime
-          DateTime studyDateTime = DateTime.parse(data['studytime']);
-          // Calculate the difference in milliseconds
-          studyTime = DateTime.now().difference(studyDateTime);
-        } else {
-          // Parse 'studytime' as Duration (assuming it's in milliseconds)
-          studyTime = Duration(milliseconds: data['studytime']);
-        }
-
+        String rawTime = data['studytime'].toString(); // "2000-01-01T00:00:10.000Z"
+        String formattedDate = "${date.year}-${_twoDigits(date.month)}-${_twoDigits(date.day)} ";
+        // print(formattedDate);
+        // "T"以下の時間部分を抜き出す
+        String extractedTime = rawTime.substring(rawTime.indexOf('T') + 1, rawTime.indexOf('.'));
         String subject = data['subject'].toString();
 
         return StudyRecord(
-          date: date,
-          studyTime: studyTime,
+          date: formattedDate,
+          studyTime: extractedTime,
           subject: subject,
         );
       }).toList();
@@ -141,4 +133,9 @@ Future<List<StudyRecord>> fetchStudynoteShow() async {
   }
 
   return studyRecords;
+}
+
+String _twoDigits(int n) {
+  if (n >= 10) return "$n";
+  return "0$n";
 }
