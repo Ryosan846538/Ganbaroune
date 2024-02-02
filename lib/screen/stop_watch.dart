@@ -237,9 +237,13 @@ class _CountUpPageState extends State<CountUpPage> {
                                 DropdownButton<String>(
                                   value: selectedSubject,
                                   onChanged: (String? newValue) {
-                                    setState(() {
-                                      selectedSubject = newValue!;
-                                    });
+                                    if (newValue != null) {
+                                      setState(() {
+                                        selectedSubject = newValue;
+                                      });
+                                      // ここで他の処理を行うこともできます
+                                      // 例えば、データベースへの更新など
+                                    }
                                   },
                                   items: <String>['何もなし', '課題', '自習', '秘密'].map<DropdownMenuItem<String>>((String value) {
                                     return DropdownMenuItem<String>(
