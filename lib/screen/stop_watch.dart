@@ -54,10 +54,10 @@ class _CountUpPageState extends State<CountUpPage> {
               key: _flipCardKey,
               direction: FlipDirection.VERTICAL,
               front: Card(
-                color: Colors.green[300],
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: const BorderSide(color: Colors.black, width: 4),
+                  side: const BorderSide(color: Colors.orangeAccent, width: 4),
                 ),
                 child: SizedBox(
                   width: 360,
@@ -91,10 +91,10 @@ class _CountUpPageState extends State<CountUpPage> {
                 ),
               ),
               back: Card(
-                color: Colors.green[300],
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
-                  side: const BorderSide(color: Colors.black, width: 4),
+                  side: const BorderSide(color: Colors.orangeAccent, width: 4),
                 ),
                 child: const SizedBox(
                   width: 360,
@@ -122,72 +122,150 @@ class _CountUpPageState extends State<CountUpPage> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 32,
-            ),
             const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _stopWatchTimer.onStartTimer,
-              child: const Text('スタート'),
-            ),
             const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _stopWatchTimer.onStopTimer,
-              child: const Text('ストップ'),
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _stopWatchTimer.onResetTimer,
-              child: const Text('リセット'),
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () {
-                _stopWatchTimer.onStopTimer();
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (_) {
-                    return AlertDialog(
-                      title: const Text("きろくしますか？"),
-                      content: StreamBuilder<int>(
-                        stream: _stopWatchTimer.rawTime,
-                        initialData: _stopWatchTimer.rawTime.value,
-                        builder: (context, snapshot) {
-                          final displayTime = _getDisplayTime(snapshot.data!);
-                          return Text(displayTime);
-                        },
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _stopWatchTimer.onStartTimer,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.indigo[200]!),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                        ),
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          const EdgeInsets.all(15),
+                        ),
                       ),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text("いいえ"),
-                          onPressed: () {
-                            _stopWatchTimer.onStartTimer();
-                            Navigator.of(context, rootNavigator: true).pop();
-                          },
+                      child: const Text(
+                        'スタート',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
                         ),
-                        TextButton(
-                          child: const Text("はい"),
-                          onPressed: () async {
-                            String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-                            dynamic inputData = {
-                              'studytime': displayTime,
-                              'subject': 1,
-                              'username': 'test',
-                              'date': formattedDate,
-                              'goal': 'test'
-                            };
-                            await fetchStudyNote(inputData);
-                            if (!mounted) return;
-                            Navigator.of(context, rootNavigator: true).pop();
-                          },
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    ElevatedButton(
+                      onPressed: _stopWatchTimer.onStopTimer,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.pink[200]!),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
                         ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: const Text('きろく'),
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          const EdgeInsets.all(15),
+                        ),
+                      ),
+                      child: const Text(
+                        'ストップ',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                      const SizedBox(height: 32),
+                      ElevatedButton(
+                        onPressed: _stopWatchTimer.onResetTimer,
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.yellow[200]!),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                          ),
+                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            const EdgeInsets.all(15),
+                          ),
+                        ),
+                        child: const Text(
+                          'リセット',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                        ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                SizedBox(
+                  width: 300,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        _stopWatchTimer.onStopTimer();
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) {
+                            return AlertDialog(
+                              title: const Text("きろくしますか？"),
+                              content: StreamBuilder<int>(
+                                stream: _stopWatchTimer.rawTime,
+                                initialData: _stopWatchTimer.rawTime.value,
+                                builder: (context, snapshot) {
+                                  final displayTime = _getDisplayTime(snapshot.data!);
+                                  return Text(displayTime);
+                                },
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text("いいえ"),
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text("はい"),
+                                  onPressed: () async {
+                                    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+                                    dynamic inputData = {
+                                      'studytime': displayTime,
+                                      'subject': 1,
+                                      'username': 'test',
+                                      'date': formattedDate,
+                                      'goal': 'test'
+                                    };
+                                    await fetchStudyNote(inputData);
+                                    if (!mounted) return;
+                                    Navigator.of(context, rootNavigator: true).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.green[200]!),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                        ),
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          const EdgeInsets.all(15),
+                        ),
+                      ),
+                      child: const Text(
+                        'まなびストック',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                ),
+              ],
             ),
             const SizedBox(height: 32), // 92行目の修正
           ],
