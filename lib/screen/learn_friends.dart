@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '/service/friend_data_repository.dart';
 import '/service/api_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const storage = FlutterSecureStorage();
 
 class Friend {
   final String name;
@@ -51,8 +54,9 @@ class FriendListState extends State<FriendList> {
   }
 
   void fetchFriends() async {
+    String? value = await storage.read(key: "username");
     try {
-      List<Friend> fetchedFriends = await getFriends('john');
+      List<Friend> fetchedFriends = await getFriends(value!);
       if (fetchedFriends.isNotEmpty) {
         setState(() {
           friends = fetchedFriends;
@@ -64,7 +68,8 @@ class FriendListState extends State<FriendList> {
   }
 
   Future<void> _refreshFriends() async {
-    final updatedRecords = await getFriends('john');
+    String? value = await storage.read(key: "username");
+    final updatedRecords = await getFriends(value!);
     if (updatedRecords.isNotEmpty) {
       setState(() {
         friends = updatedRecords;
@@ -235,7 +240,8 @@ Future<List<Friend>> fetchFriend(dynamic inputData) async {
     await friend.postFriendAdd(inputData);
     // データの受け取りと処理はここで行う
     // 例えば、結果をログに出力するなど
-    List<Friend> updatedFriends = await getFriends('john');
+    String? value = await storage.read(key: "username");
+    List<Friend> updatedFriends = await getFriends(value!);
     return updatedFriends;
   } catch (error) {
     // エラーハンドリング

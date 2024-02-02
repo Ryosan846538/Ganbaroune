@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '/service/studynote_data_repository.dart';
 import '/service/api_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const storage = FlutterSecureStorage();
 
 class StudyRecord {
   final String date;
@@ -39,11 +42,12 @@ class LearnStockState extends State<LearnStock> {
   late Future<List<StudyRecord>> studyRecords;
 
   @override
-  void initState() {
+  void initState() async{
     super.initState();
     // Fetch data when the widget is initialized
     try{
-      studyRecords = fetchStudynoteShow('test');
+      String? value = await storage.read(key: "username");
+      studyRecords = fetchStudynoteShow(value!);
     }catch (error){
       //print('Error: $error');
     }
@@ -51,7 +55,8 @@ class LearnStockState extends State<LearnStock> {
 
   Future<void> _refreshData() async {
     // Fetch updated data from the API
-    final updatedRecords = await fetchStudynoteShow('test');
+    String? value = await storage.read(key: "username");
+    final updatedRecords = await fetchStudynoteShow(value!);
     setState(() {
       studyRecords = Future.value(updatedRecords);
     });
