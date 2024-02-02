@@ -6,6 +6,7 @@ import '/screen/learn_stock.dart';
 import './login.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+const storage = FlutterSecureStorage();
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
