@@ -25,17 +25,23 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.orange[300],
         centerTitle: true,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(30.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Center(
+              Container(
+                alignment: Alignment.center,
+                width: 200,
+                height: 200,
                 child: Image.asset(
-                  'assets/images/GanbaICON.png',
+                  'assets/images/icon.png',
                   fit: BoxFit.contain,
                 ),
+              ),
+              const SizedBox(
+                height: 32,
               ),
 
               Padding(
@@ -48,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
@@ -67,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                           })),
                 ),
               ),
+
               Center(
                 child: ElevatedButton(
                     child: const Text('ログイン'),

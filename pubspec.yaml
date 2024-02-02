@@ -29,5 +29,5 @@ dev_dependencies:
 flutter:
   assets:
   #- .env
-  - assets/images/GanbaICON.png
+  - assets/images/icon.png
   uses-material-design: true
