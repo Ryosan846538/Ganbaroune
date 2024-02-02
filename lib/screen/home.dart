@@ -3,6 +3,7 @@ import '/screen/menu.dart';
 import '/screen/stop_watch.dart';
 import '/screen/learn_friends.dart';
 import '/screen/learn_stock.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -29,8 +30,15 @@ class HomeState extends State<Home> {
       case 2:
         return const FriendList();
       default:
-        return const Center(
-          child: Text('Hello World'),
+        return Center(
+          child: OutlinedButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            child: const Text('ログアウト',
+            style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
         );
     }
   }
