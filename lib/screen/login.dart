@@ -25,27 +25,43 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.orange[300],
         centerTitle: true,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(30.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              Container(
+                alignment: Alignment.center,
+                width: 200,
+                height: 200,
+                child: Image.asset(
+                  'assets/images/icon.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
                   controller: nameController,
                   decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
                     labelText: 'ユーザー名を入力してください',
                   ),
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
                   controller: passwordController,
                   obscureText: _isObscure,
                   decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
                       labelText: 'Password',
                       suffixIcon: IconButton(
                           icon: Icon(_isObscure
@@ -58,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                           })),
                 ),
               ),
+
               Center(
                 child: ElevatedButton(
                     child: const Text('ログイン'),
