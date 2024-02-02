@@ -51,6 +51,7 @@ class UserRegisterState extends State<UserRegister> {
             TextField(
               controller: nameController,
               decoration: const InputDecoration(
+                border: OutlineInputBorder(),
                 labelText: 'ユーザー名',
               ),
             ),
@@ -60,6 +61,7 @@ class UserRegisterState extends State<UserRegister> {
             TextField(
               controller: passwordController,
               decoration: const InputDecoration(
+                border: OutlineInputBorder(),
                 labelText: 'パスワード',
               ),
               obscureText: true,
@@ -70,6 +72,7 @@ class UserRegisterState extends State<UserRegister> {
             const TextField(
               // controller: passwordConfirmController,
               decoration: InputDecoration(
+                border: OutlineInputBorder(),
                 labelText: 'パスワード確認',
               ),
               obscureText: true,

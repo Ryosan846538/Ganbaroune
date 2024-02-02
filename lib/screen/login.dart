@@ -31,11 +31,19 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Center(
+                child: Image.asset(
+                  'images/GanbaICON.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
                   controller: nameController,
                   decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
                     labelText: 'ユーザー名を入力してください',
                   ),
                 ),
@@ -46,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: passwordController,
                   obscureText: _isObscure,
                   decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
                       labelText: 'Password',
                       suffixIcon: IconButton(
                           icon: Icon(_isObscure
