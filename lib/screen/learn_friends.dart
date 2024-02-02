@@ -165,10 +165,10 @@ class FriendListState extends State<FriendList> {
                               friend.emojiReaction = newValue;
                               friend.lastReactionDate = DateTime.now();
                               int emojiValue = emojiToInt[newValue!]!;
-                              print(emojiValue);
+                              // print(emojiValue);
                               dynamic reactionData = {
                                 'myname': value,
-                                'friendname': friend.name,
+                                'yourname': friend.name,
                                 'kind': emojiValue,
                               };
                               fetchReaction(reactionData);
@@ -297,7 +297,7 @@ Future<void> fetchReaction(dynamic reactionData) async {
   var reaction = ReactionDataRepository(apiClient);
   try {
     // Prepare the reaction data
-    print(reactionData);
+    // print(reactionData);
     // Send the reaction
     await reaction.postReactionAdd(reactionData);
   } catch (error) {
