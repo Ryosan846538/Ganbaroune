@@ -7,9 +7,20 @@ import '/service/api_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '/service/reaction_data_repository.dart';
 
 const storage = FlutterSecureStorage();
 
+final Map<int,String> emojiToInt = {
+  0:'None', // 追加: リアクションなしを示すキー
+  1:'🙂',
+  2:'😊',
+  3:'😂',
+  4:'😢',
+  5:'😠',
+  6:'👍',
+  7:'👎',
+};
 
 class CountUpPage extends StatefulWidget {
   const CountUpPage({Key? key}) : super(key: key);
@@ -289,7 +300,6 @@ class _CountUpPageState extends State<CountUpPage> {
                                     await updateLogin(statusCode);
                                     if (!mounted) return;
                                     Navigator.of(context, rootNavigator: true).pop();
-
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -309,6 +319,7 @@ class _CountUpPageState extends State<CountUpPage> {
                                         );
                                       },
                                     );
+                                   showReactionDialog(context,"john");
                                   },
                                 ),
                               ],
@@ -375,3 +386,56 @@ Future<void> updateLogin(dynamic statusCode) async {
     // print('Error Details: ${error.toString()}');
   }
 }
+
+Future<void> showReactionDialog(BuildContext context, String username) async {
+  final String apiUrl = dotenv.get('API_SERVER');
+  ApiClient apiClient = ApiClient(apiUrl);
+  var studyNote = ReactionDataRepository(apiClient);
+
+  try {
+    dynamic responseData = await studyNote.getReactionName(username); // APIからデータを取得する
+    //print(responseData);
+    if (responseData['message'] == 'succeed') {
+      List<Map<String, dynamic>> dataList = List.castFrom(responseData['reaction']);
+      List<Widget> options = dataList.map((data) {
+        String name=data['myname'];
+        String? reaction = emojiToInt[0];
+        if (data['kind'] != null) {
+          reaction = emojiToInt[data['kind'].toInt()];
+          // 他の処理
+        }
+        return SimpleDialogOption(
+          child: Text('$nameさんから$reaction'),
+        );
+      }).toList();
+
+      options.add(
+        SimpleDialogOption(
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pop();
+            // 閉じるための処理を追加
+          },
+          child: const Text("閉じる"),
+        ),
+      );
+
+
+      // ignore: use_build_context_synchronously
+      showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text("みなさんからほめほめが来てますよ！"),
+            children: options,
+          );
+        },
+      );
+    }
+    // データの受け取りと処理はここで行う
+    // 例えば、結果をログに出力するなど
+  } catch (error) {
+    // エラーハンドリング
+    //print('Error: $error');
+  }
+}
+
