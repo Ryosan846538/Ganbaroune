@@ -3,6 +3,7 @@ import '/service/friend_data_repository.dart';
 import '/service/api_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '/service/reaction_data_repository.dart';
 
 const storage = FlutterSecureStorage();
 
@@ -154,7 +155,8 @@ class FriendListState extends State<FriendList> {
                         ),
                         DropdownButton<String>(
                           value: friend.emojiReaction ?? 'None',
-                          onChanged: (String? newValue) {
+                          onChanged: (String? newValue) async {
+                            String? value = await storage.read(key: "username");
                             setState(() {
                               if (!isSameDay(DateTime.now(),
                                   friends[index].lastReactionDate)) {
@@ -162,8 +164,14 @@ class FriendListState extends State<FriendList> {
                               }
                               friend.emojiReaction = newValue;
                               friend.lastReactionDate = DateTime.now();
-                              // int emojiValue = emojiToInt[newValue!]!;
-                              // print('emojiValue: $emojiValue');
+                              int emojiValue = emojiToInt[newValue!]!;
+                              // print(emojiValue);
+                              dynamic reactionData = {
+                                'myname': value,
+                                'yourname': friend.name,
+                                'kind': emojiValue,
+                              };
+                              fetchReaction(reactionData);
                             });
                           },
                           items: emojiOptions.map<DropdownMenuItem<String>>((
@@ -281,4 +289,20 @@ Future<List<Friend>> getFriends(String username) async {
     // Text(e);
   }
   return friends; // Always return a list, even if it's empty
+}
+
+Future<void> fetchReaction(dynamic reactionData) async {
+  final String apiUrl = dotenv.get('API_SERVER');
+  ApiClient apiClient = ApiClient(apiUrl);
+  var reaction = ReactionDataRepository(apiClient);
+  try {
+    // Prepare the reaction data
+    // print(reactionData);
+    // Send the reaction
+    await reaction.postReactionAdd(reactionData);
+  } catch (error) {
+    // エラーハンドリング
+    // print('Error: $error');
+    // print('Error Details: ${error.toString()}');
+  }
 }
