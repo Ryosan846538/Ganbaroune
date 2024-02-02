@@ -7,9 +7,10 @@ class Friend {
   final String name;
   final int status;
   String? emojiReaction;
+  String goal;
   DateTime lastReactionDate;
 
-  Friend({required this.name, required this.status, this.emojiReaction})
+  Friend({required this.name, required this.status, this.emojiReaction,required this.goal,})
       : lastReactionDate = DateTime.now();
 
   Color get statusColor {
@@ -44,7 +45,6 @@ class FriendListState extends State<FriendList> {
   List<Friend> friends = [];
 
   @override
-  @override
   void initState() {
     super.initState();
     fetchFriends();
@@ -52,19 +52,19 @@ class FriendListState extends State<FriendList> {
 
   void fetchFriends() async {
     try {
-      List<Friend> fetchedFriends = await getFriends('test');
+      List<Friend> fetchedFriends = await getFriends('john');
       if (fetchedFriends.isNotEmpty) {
         setState(() {
           friends = fetchedFriends;
         });
       }
     } catch (error) {
-      //print('Error: $error');
+      print('Error: $error');
     }
   }
 
   Future<void> _refreshFriends() async {
-    final updatedRecords = await getFriends('test');
+    final updatedRecords = await getFriends('john');
     if (updatedRecords.isNotEmpty) {
       setState(() {
         friends = updatedRecords;
@@ -171,7 +171,7 @@ class FriendListState extends State<FriendList> {
                         ),
                       ],
                     ),
-                    const Text('今日の目標: '),
+                    Text('今日の目標: ${friend.goal}'),
                   ],
                 ),
               ),
@@ -225,6 +225,7 @@ class FriendListState extends State<FriendList> {
   }
 }
 
+
 Future<List<Friend>> fetchFriend(dynamic inputData) async {
   final String apiUrl = dotenv.get('API_SERVER');
   ApiClient apiClient = ApiClient(apiUrl);
@@ -234,12 +235,12 @@ Future<List<Friend>> fetchFriend(dynamic inputData) async {
     await friend.postFriendAdd(inputData);
     // データの受け取りと処理はここで行う
     // 例えば、結果をログに出力するなど
-    List<Friend> updatedFriends = await getFriends('test');
+    List<Friend> updatedFriends = await getFriends('john');
     return updatedFriends;
   } catch (error) {
     // エラーハンドリング
-    // print('Error: $error');
-    // print('Error Details: ${error.toString()}');
+     print('Error: $error');
+     print('Error Details: ${error.toString()}');
     return [];
   }
 }
@@ -253,12 +254,17 @@ Future<List<Friend>> getFriends(String username) async {
   try{
     dynamic responseData = await friend.getFriendName(username);
     if(responseData['message'] == 'succeed'){
-      List<Map<String, dynamic>> dataList = List.castFrom(responseData['data']);
+      List<Map<String, dynamic>> dataList = List.castFrom(responseData['friend_data']);
+      print(dataList);
       friends = dataList.map((data) {
-        String friendyou = data['friendyou'].toString();
+        String friendName = data['friend_name'].toString();
+        int status=data['user_login'].toInt();
+        String goal = data['goal'].toString();
+        print(status);
         return Friend(
-          name: friendyou, // Use friendyou as the name
-          status: 0, // or any default status
+          name: friendName, // Use friendyou as the name
+          status: status,
+          goal: goal,// or any default status
         );
       }).toList();
     } else {
