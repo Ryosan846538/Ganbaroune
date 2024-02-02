@@ -312,14 +312,17 @@ class _CountUpPageState extends State<CountUpPage> {
                                                 setState(() {
                                                   selectedSubject = value;
                                                 });
-                                                Navigator.of(context, rootNavigator: true).pop();
+                                                Navigator.of(context).pop();
                                               },
                                             );
                                           }).toList(),
                                         );
                                       },
                                     );
-                                   showReactionDialog(context,"john");
+                                    Future.delayed(const Duration(milliseconds: 7000), () {
+                                      showReactionDialog(context, "john");
+                                    });
+                                    print("Hi");
                                   },
                                 ),
                               ],
@@ -394,7 +397,6 @@ Future<void> showReactionDialog(BuildContext context, String username) async {
 
   try {
     dynamic responseData = await studyNote.getReactionName(username); // APIからデータを取得する
-    //print(responseData);
     if (responseData['message'] == 'succeed') {
       List<Map<String, dynamic>> dataList = List.castFrom(responseData['reaction']);
       List<Widget> options = dataList.map((data) {
