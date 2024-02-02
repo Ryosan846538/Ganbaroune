@@ -59,7 +59,7 @@ class FriendListState extends State<FriendList> {
         });
       }
     } catch (error) {
-      print('Error: $error');
+     // print('Error: $error');
     }
   }
 
@@ -239,8 +239,8 @@ Future<List<Friend>> fetchFriend(dynamic inputData) async {
     return updatedFriends;
   } catch (error) {
     // エラーハンドリング
-     print('Error: $error');
-     print('Error Details: ${error.toString()}');
+     //print('Error: $error');
+     //print('Error Details: ${error.toString()}');
     return [];
   }
 }
@@ -255,12 +255,12 @@ Future<List<Friend>> getFriends(String username) async {
     dynamic responseData = await friend.getFriendName(username);
     if(responseData['message'] == 'succeed'){
       List<Map<String, dynamic>> dataList = List.castFrom(responseData['friend_data']);
-      print(dataList);
+      //print(dataList);
       friends = dataList.map((data) {
         String friendName = data['friend_name'].toString();
         int status=data['user_login'].toInt();
         String goal = data['goal'].toString();
-        print(status);
+        //print(status);
         return Friend(
           name: friendName, // Use friendyou as the name
           status: status,

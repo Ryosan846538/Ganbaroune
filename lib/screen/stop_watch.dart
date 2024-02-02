@@ -18,6 +18,9 @@ class _CountUpPageState extends State<CountUpPage> {
   final _stopWatchTimer = StopWatchTimer();
   final _scrollController = ScrollController();
   final _flipCardKey = GlobalKey<FlipCardState>();
+  String selectedSubject = '何もなし'; // デフォルトの選択肢
+
+
 
   String _getDisplayTime(int time) {
     final hours =
@@ -226,6 +229,24 @@ class _CountUpPageState extends State<CountUpPage> {
                                 },
                               ),
                               actions: <Widget>[
+                                DropdownButton<String>(
+                                  value: selectedSubject,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      selectedSubject = newValue!;
+                                    });
+                                  },
+                                  items: <String>['何もなし', '課題', '自習', '秘密'].map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                                const SizedBox(
+                                  height: 32,
+                                ),
+
                                 TextButton(
                                   child: const Text("いいえ"),
                                   onPressed: () {
