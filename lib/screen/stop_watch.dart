@@ -319,7 +319,7 @@ class _CountUpPageState extends State<CountUpPage> {
                                         );
                                       },
                                     );
-                                   mainshowReactionDialog(context,"john");
+                                   showReactionDialog(context,"john");
                                   },
                                 ),
                               ],
