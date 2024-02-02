@@ -59,7 +59,7 @@ class FriendListState extends State<FriendList> {
         });
       }
     } catch (error) {
-      print('Error: $error');
+     // print('Error: $error');
     }
   }
 
@@ -93,7 +93,7 @@ class FriendListState extends State<FriendList> {
       'myself': 'test',
       'yourself': name,
     };
-    print(inputData);
+    //print(inputData);
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     try {
       await fetchFriend(inputData);
@@ -234,15 +234,15 @@ Future<List<Friend>> fetchFriend(dynamic inputData) async {
 
   try {
     await friend.postFriendAdd(inputData);
-    print('API Response: $inputData');
+    //print('API Response: $inputData');
     // データの受け取りと処理はここで行う
     // 例えば、結果をログに出力するなど
     List<Friend> updatedFriends = await getFriends('john');
     return updatedFriends;
   } catch (error) {
     // エラーハンドリング
-     print('Error: $error');
-     print('Error Details: ${error.toString()}');
+     //print('Error: $error');
+     //print('Error Details: ${error.toString()}');
     return [];
   }
 }
@@ -257,12 +257,12 @@ Future<List<Friend>> getFriends(String username) async {
     dynamic responseData = await friend.getFriendName(username);
     if(responseData['message'] == 'succeed'){
       List<Map<String, dynamic>> dataList = List.castFrom(responseData['friend_data']);
-      print(dataList);
+      //print(dataList);
       friends = dataList.map((data) {
         String friendName = data['friend_name'].toString();
         int status=data['user_login'].toInt();
         String goal = data['goal'].toString();
-        print(status);
+        //print(status);
         return Friend(
           name: friendName, // Use friendyou as the name
           status: status,
