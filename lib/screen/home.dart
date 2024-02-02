@@ -3,6 +3,8 @@ import '/screen/menu.dart';
 import '/screen/stop_watch.dart';
 import '/screen/learn_friends.dart';
 import '/screen/learn_stock.dart';
+import './login.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -29,8 +31,21 @@ class HomeState extends State<Home> {
       case 2:
         return const FriendList();
       default:
-        return const Center(
-          child: Text('Hello World'),
+        return Center(
+          child: OutlinedButton(
+            onPressed:() async{
+              await storage.delete(key: "username");
+              if (!mounted) return;
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            },
+            child: const Text(
+              'ログアウト',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
         );
     }
   }
