@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               Center(
                 child: Image.asset(
-                  'images/GanbaICON.png',
+                  'assets/images/GanbaICON.png',
                   fit: BoxFit.contain,
                 ),
               ),
